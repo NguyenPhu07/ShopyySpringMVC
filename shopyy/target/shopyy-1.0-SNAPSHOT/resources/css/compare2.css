@@ -1,0 +1,126 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Aug 22, 2024, 4:11:12 PM
+    Author     : Admin
+*/
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+}
+
+.compare-container {
+    width: 90%;
+    margin: 20px auto;
+}
+
+.compare-list {
+    float: left;
+    width: 20%;
+    margin-right: 2%;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.compare-list h3 {
+    margin: 0 0 10px 0;
+}
+
+.compare-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px 0;
+}
+
+.compare-list ul li {
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.compare-list label {
+    display: block;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.product-compare {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.product-compare .product {
+    width: 32%;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.product-compare .product img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.product-compare .product button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.product-compare .product button:hover {
+    background-color: #0056b3;
+}
+
+.product-details {
+    clear: both;
+    width: 100%;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.product-details table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.product-details table th,
+.product-details table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.product-details table th {
+    background-color: #f4f4f4;
+}
+
+.product-details button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.product-details button:hover {
+    background-color: #0056b3;
+}
