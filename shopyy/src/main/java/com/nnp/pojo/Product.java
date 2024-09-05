@@ -4,6 +4,7 @@
  */
 package com.nnp.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -22,8 +23,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -71,15 +74,22 @@ public class Product implements Serializable {
     private Boolean active;
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
+    @JsonIgnore
     private Category categoryId;
     @JoinColumn(name = "shop_id", referencedColumnName = "id")
     @ManyToOne
+    @JsonIgnore
     private Shop shopId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productId")
+    @JsonIgnore
     private Set<Comment> commentSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productId")
+      @JsonIgnore
     private Set<OrderDetail> orderDetailSet;
-
+    
+    @Transient // thêm cái này để báo cho nó biết cột này ko mapping xuống csdl
+    private MultipartFile file;
+    
     public Product() {
     }
 
@@ -206,6 +216,20 @@ public class Product implements Serializable {
     @Override
     public String toString() {
         return "com.nnp.pojo.Product[ id=" + id + " ]";
+    }
+    
+      /**
+     * @return the file
+     */
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    /**
+     * @param file the file to set
+     */
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
     
 }

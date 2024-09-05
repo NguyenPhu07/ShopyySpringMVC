@@ -19,8 +19,10 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -38,9 +40,6 @@ import org.springframework.stereotype.Component;
     @NamedQuery(name = "Shop.findByImage", query = "SELECT s FROM Shop s WHERE s.image = :image")})
 @Component
 public class Shop implements Serializable {
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "shopId")
-    private Set<OrderDetail> orderDetailSet;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -63,7 +62,7 @@ public class Shop implements Serializable {
     @Size(max = 200)
     @Column(name = "image")
     private String image;
-    @OneToMany(mappedBy = "shopId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "shopId")// ở đây Cascade ràng buộc chặt, nên xóa sản phẩm, thì phải tách rời sản phẩm đó ra khỏi list
     private Set<Product> productSet;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
@@ -72,6 +71,11 @@ public class Shop implements Serializable {
     private Set<Category> categorySet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "shopId")
     private Set<CommentShop> commentShopSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "shopId")
+    private Set<OrderDetail> orderDetailSet;
+
+    @Transient // thêm cái này để báo cho nó biết cột này ko mapping xuống csdl
+    private MultipartFile file;
 
     public Shop() {
     }
@@ -192,5 +196,19 @@ public class Shop implements Serializable {
     public void setOrderDetailSet(Set<OrderDetail> orderDetailSet) {
         this.orderDetailSet = orderDetailSet;
     }
-    
+
+    /**
+     * @return the file
+     */
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    /**
+     * @param file the file to set
+     */
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
+
 }

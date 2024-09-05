@@ -12,7 +12,19 @@
 <c:if test="${errMsg == true}">
     <div class="alert alert-success alert-dismissible">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        <strong>Success!</strong> Indicates a successful or positive action.
+        <strong>Thành Công!</strong> Đăng Ký Thành Công.
+    </div>
+</c:if>
+<c:if test="${errMsg == false}">
+    <div class="alert alert-danger alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Thất Bại!</strong>  Mật khẩu không khớp!
+    </div>
+</c:if>
+<c:if test="${errMsg2 == false}">
+    <div class="alert alert-danger alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Thất Bại!</strong>  Tên tài khoản đã tồn tại!.
     </div>
 </c:if>
 <c:url value="/register" var="action"/>
@@ -41,6 +53,10 @@
     <div class="form-group">
         <lable for="password"> Password</lable>
             <form:input type="password" id="password" path="password" class="form-control" />
+    </div>
+    <div class="form-group">
+        <lable for="confirm-password"> Confirm Password</lable>
+            <form:input type="password" id="confirm-password" path="confirmPassword" class="form-control" />
     </div>
     <input type="submit" value="Đăng ký" class="btn-danger mb-3" href="${action}" />
 </form:form>

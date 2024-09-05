@@ -27,8 +27,15 @@
         <put-attribute name="title" value="Đăng Kí Bán "/>
         <put-attribute name="content" value="/WEB-INF/pages/frmSeller.jsp"/>
     </definition>
-    
-    
+      <definition name="cart" extends="baseLayout">
+        <put-attribute name="title" value="Giỏ Hàng "/>
+        <put-attribute name="content" value="/WEB-INF/pages/cart.jsp"/>
+    </definition>
+    <definition name="login" extends="baseManager">
+        <put-attribute name="title" value="Đăng Nhập "/>
+        <put-attribute name="content" value="/WEB-INF/manager/login.jsp"/>
+    </definition>
+   
     <definition name="admin" extends="baseManager">
         <put-attribute name="title" value="Quản Lý"/>
         <put-attribute name="content" value="/WEB-INF/manager/admin/admin.jsp"/>
@@ -37,46 +44,19 @@
         <put-attribute name="title" value="Xét Duyệt"/>
         <put-attribute name="content" value="/WEB-INF/manager/admin/approval.jsp"/>
     </definition>
-    <definition name="statsRevenue" extends="baseLayout">
+     <definition name="listShop" extends="baseManager">
+        <put-attribute name="title" value="Chuỗi Cửa Hàng"/>
+        <put-attribute name="content" value="/WEB-INF/manager/shop/listShop.jsp"/>
+    </definition>
+    <definition name="statsRevenue" extends="baseManager">
         <put-attribute name="title" value="Doanh Thu Sản Phẩm"/>
         <put-attribute name="content" value="/WEB-INF/manager/shop/statsRevenue.jsp"/>
     </definition>
-    <definition name="statsCate" extends="baseLayout">
+    <definition name="statsCate" extends="baseManager">
         <put-attribute name="title" value="Doanh Thu Doanh Mục"/>
         <put-attribute name="content" value="/WEB-INF/manager/shop/statsCate.jsp"/>
     </definition>
-    
-    <definition name="shop" extends="baseLayout">
-        <put-attribute name="title" value="Quản Lý Cửa Hàng"/>
-        <put-attribute name="content" value="/WEB-INF/manager/shop/shop.jsp"/>
-    </definition>
-    <definition name="createCate" extends="baseLayout">
-        <put-attribute name="title" value="Tạo Danh Mục "/>
-        <put-attribute name="content" value="/WEB-INF/manager/shop/frmCate.jsp"/>
-    </definition>
-    <definition name="createProduct" extends="baseLayout">
-        <put-attribute name="title" value="Tạo Sản Phẩm "/>
-        <put-attribute name="content" value="/WEB-INF/manager/shop/frmProduct.jsp"/>
-    </definition>
-    <definition name="success" extends="baseLayout">
-        <put-attribute name="title" value="Thành công "/>
-        <put-attribute name="content" value="/WEB-INF/manager/shop/frmSuccess.jsp"/>
-    </definition>
-     <definition name="setCate" extends="baseLayout">
-        <put-attribute name="title" value="Thêm Sản Phẩm Vào Danh Mục"/>
-        <put-attribute name="content" value="/WEB-INF/manager/shop/setCate.jsp"/>
-    </definition>
-     <definition name="compareProducts" extends="baseLayout">
-        <put-attribute name="title" value="Thêm Sản Phẩm Vào Danh Mục"/>
-        <put-attribute name="content" value="/WEB-INF/pages/compareProducts.jsp"/>
-    </definition> 
-     <definition name="productList" extends="baseLayout">
-        <put-attribute name="title" value="Thêm Sản Phẩm Vào Danh Mục"/>
-        <put-attribute name="content" value="/WEB-INF/pages/productList.jsp"/>
-    </definition> 
-  
-
-    <definition name="statsFrequency" extends="baseManager">
+     <definition name="statsFrequency" extends="baseManager">
         <put-attribute name="title" value="Tần Suất"/>
         <put-attribute name="content" value="/WEB-INF/manager/admin/statsFrequency.jsp"/>
     </definition>
@@ -84,5 +64,37 @@
         <put-attribute name="title" value="Tổng Sản Phẩm"/>
         <put-attribute name="content" value="/WEB-INF/manager/admin/statsTotal.jsp"/>
     </definition>
+    
+    <definition name="shop" extends="baseManager">
+        <put-attribute name="title" value="Quản Lý Cửa Hàng"/>
+        <put-attribute name="content" value="/WEB-INF/manager/shop/shop.jsp"/>
+    </definition>
+    <definition name="createCate" extends="baseManager">
+        <put-attribute name="title" value="Tạo Danh Mục "/>
+        <put-attribute name="content" value="/WEB-INF/manager/shop/frmCate.jsp"/>
+    </definition>
+    <definition name="createProduct" extends="baseManager">
+        <put-attribute name="title" value="Tạo Sản Phẩm "/>
+        <put-attribute name="content" value="/WEB-INF/manager/shop/frmProduct.jsp"/>
+    </definition>
+    <definition name="success" extends="baseManager">
+        <put-attribute name="title" value="Thành công "/>
+        <put-attribute name="content" value="/WEB-INF/manager/shop/frmSuccess.jsp"/>
+    </definition>
+     <definition name="setCate" extends="baseManager">
+        <put-attribute name="title" value="Thêm Sản Phẩm Vào Danh Mục"/>
+        <put-attribute name="content" value="/WEB-INF/manager/shop/setCate.jsp"/>
+    </definition>
+    <definition name="createShop" extends="baseManager">
+        <put-attribute name="title" value="Tạo Cửa Hàng"/>
+        <put-attribute name="content" value="/WEB-INF/manager/shop/frmShop.jsp"/>
+    </definition> 
+     <definition name="compareProducts" extends="baseLayout">
+        <put-attribute name="title" value="Thêm Sản Phẩm Vào Danh Mục"/>
+        <put-attribute name="content" value="/WEB-INF/pages/compareProducts.jsp"/>
+    </definition> 
+  
+
+   
 
 </tiles-definitions>

@@ -4,15 +4,23 @@
  */
 package com.nnp.service.impl;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.nnp.pojo.Product;
 import com.nnp.pojo.Shop;
 import com.nnp.repository.ProductRepository;
 import com.nnp.repository.ShopRepository;
 import com.nnp.service.ProductService;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +36,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ShopRepository shopRepo;
+
+    @Autowired
+    private Cloudinary cloudinary;
 
     @Autowired
     private Product product;
@@ -93,17 +104,39 @@ public class ProductServiceImpl implements ProductService {
             // set Shop đang đứng khi tạo lần đầu 
             p.setShopId((Shop) this.shopRepo.getShopsById(shopId));
         }
+
+        // Nếu không có ảnh mới, giữ nguyên ảnh cũ
+        if (!p.getFile().isEmpty()) {
+            try {
+                Map res = this.cloudinary.uploader().upload(p.getFile().getBytes(),
+                        ObjectUtils.asMap("resource_type", "auto")); // nó trả 1 cấu trúc có 1 trường khá đặc biệt
+                // đó là secure_url: cái link đã upload lên cloudinary!
+
+                // Gán ảnh mới sau khi upload lên Cloudinary
+                p.setImage(res.get("secure_url").toString());// dựa trên trường đó để gán do Image p.setImage(...)
+            } catch (IOException ex) {
+                Logger.getLogger(ProductServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            // Giữ nguyên ảnh cũ nếu không có ảnh mới
+            Product existingProduct = this.prodRepo.getProdById(p.getId());
+            if (existingProduct != null) {
+                p.setImage(existingProduct.getImage());
+            }
+        }
+
         //set ngày tháng hiện tại (cập nhật hay tạo mới vẫn set thời gian hiện tại)
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
         p.setCreatedDate(date);
 
+        // Xử lý chuỗi tiếng Việt CẤM TUYỆT ĐỐI SỬ DỤNG XỬ LÍ RIÊNG CHUỖI TIẾNG VIỆT nếu đã có mutilPartFile trước đó rồi!
         return this.prodRepo.AddorUpdate(p);
     }
 
     @Override
-    public Boolean DeleteProduct(Product p) {
-        return this.prodRepo.DeleteProduct(p);
+    public Boolean DeleteProduct(int productId) {
+        return this.prodRepo.DeleteProduct(productId);
     }
 
 }

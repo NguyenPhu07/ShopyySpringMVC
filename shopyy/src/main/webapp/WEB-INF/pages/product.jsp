@@ -83,7 +83,8 @@
                                 <div class="d-flex justify-content-between mt-2 mb-2">
                                     <a href="product-details1.html" class="btn btn-primary btn-sm">Chi tiết</a>
                                     <c:if test="${p.active==true}">
-                                        <a href="order1.html" class="btn btn-success btn-sm ">Đặt hàng</a>
+                                         <c:url value="api/addCart/${p.id}" var="c" />
+                                        <a href="javascript:;" class="btn btn-success btn-sm" onClick="addToCart(${p.id})">Đặt hàng</a>
                                     </c:if>
                                 </div>
                                 <button  onclick="addToCompare('${p.id}', '${p.name}')">So sánh</button>

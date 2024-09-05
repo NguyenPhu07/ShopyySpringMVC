@@ -20,16 +20,14 @@
     }
 
 </style>
-<h1>${nsg}</h1>
-<h1>${hello}</h1>
-<h1>${errMsg}</h1>
-<c:if test="${msgDelete == true}">
+<h1>${currentUsername}</h1>
+<c:if test="${msgDelete == 1}">
     <div class="alert alert-success alert-dismissible">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         <strong>Thành Công!</strong> Xóa Thành Công.
     </div>
 </c:if>
-<c:if test="${msgDelete == false}">
+<c:if test="${msgDelete == 2}">
     <div class="alert alert-success alert-dismissible">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         <strong>Thất Bại!</strong> Xóa Thất Bại.
@@ -40,7 +38,7 @@
 <div class="container mt-4">
     <div class=" row shop-info-container ">
         <!-- Shop Avatar -->
-        <img src="https://down-bs-vn.img.susercontent.com/vn-11134004-7r98o-lwlml445rt97e2_tn.webp"
+        <img src="${shop.image}"
              alt="Shop Avatar" style="border-radius: 50px;">
         <!-- Shop Information -->
         <div class="shop-details">
@@ -121,7 +119,7 @@
                         <!-- Product Card 1 -->
                         <div class="col-md-3 col-sm-6 mb-4">
                             <div class="product-card">
-                                <img src="https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248652/dkeolz3ghc0eino87iec.jpg"
+                                <img src="${p.image}"
                                      alt="Product Image 1">
                                 <h6>
                                     ${p.name}

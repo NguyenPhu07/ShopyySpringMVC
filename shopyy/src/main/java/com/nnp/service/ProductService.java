@@ -37,7 +37,7 @@ public interface ProductService {
      
     Boolean AddorUpdate(Product p,int shopId);
 
-    Boolean DeleteProduct(Product p);
+    Boolean DeleteProduct(int productId);
 
     Product setProduct();
 }

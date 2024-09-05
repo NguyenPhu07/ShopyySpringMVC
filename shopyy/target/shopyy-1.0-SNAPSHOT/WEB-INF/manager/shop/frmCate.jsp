@@ -14,7 +14,7 @@
     Cửa Hàng: ${nsg} 
 </div>
 
-<c:url value="/shopCate" var="action" />
+<c:url value="/shop/shopCate" var="action" />
 <form:form  method="post" action="${action}" modelAttribute="category" >
     <div class="form-group">
         <lable for="name"> Danh mục</lable>

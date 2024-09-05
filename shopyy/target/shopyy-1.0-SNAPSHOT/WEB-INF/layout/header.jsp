@@ -35,10 +35,12 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Trang chủ</a>
+                    <c:url value="/" var="index" />
+                    <a class="nav-link" href="${index}">Trang chủ</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Danh mục</a>
+                    <c:url value="/products" var="p" />
+                    <a class="nav-link" href="${p}">Danh mục</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Khuyến mãi</a>
@@ -47,19 +49,12 @@
                     <a class="nav-link" href="#">Liên hệ</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Giỏ hàng</a>
+                     <c:url value="/cart" var="c" />
+                    <a class="nav-link" href="${c}">Giỏ hàng<span class="badge badge-danger counter">${size}</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Tạo cửa hàng</a>
                 </li>
-                <!--gộp lại thành 1 mục là Doanh Thu-->
-                 <c:url value="/stats" var="stats"/>
-                <li class="nav-item">
-                    <a class="nav-link" href="${stats}/revenue">Doanh Thu Sản Phẩm</a>
-                </li>       <li class="nav-item">
-                    <a class="nav-link" href="${stats}/cate">Doanh Thu Danh Mục </a>
-                </li>       
-
             </ul>
         </div>
     </div>

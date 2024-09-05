@@ -49,7 +49,7 @@ public class Category implements Serializable {
     @Size(max = 100)
     @Column(name = "description")
     private String description;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoryId", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoryId")// ở đây Cascade ràng buộc chặt, nên xóa sản phẩm, thì phải tách rời sản phẩm đó ra khỏi list
     private Set<Product> productSet;
     @JoinColumn(name = "shop_id", referencedColumnName = "id")
     @ManyToOne

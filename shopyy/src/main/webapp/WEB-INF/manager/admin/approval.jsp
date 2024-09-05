@@ -11,7 +11,7 @@
 
 
 
-<div id="Details">
+<div id="Details" style="margin-bottom: 30px; margin-top:40px">
     <h3>Leave Approve</h3>
     <c:if test="${notify != null}">
         <div class="alert alert-success alert-dismissible">
@@ -29,7 +29,7 @@
             <th>Vai trò</th>
             <th>Chờ Duyệt</th>
         </tr>
-        <c:url value="/admin/approval" var="app" />
+        <c:url value="/approval" var="app" />
         <c:forEach items="${pendingUsers}" var="user">
             <tr><!--list--pending--user-->
                 <td>${user.username}</td>

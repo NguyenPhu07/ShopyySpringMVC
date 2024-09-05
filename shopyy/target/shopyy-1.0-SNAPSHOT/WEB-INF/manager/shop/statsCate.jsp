@@ -48,12 +48,14 @@
                 <tr>
                     <th> ${selectedType}</th>
                     <th>Danh Mục</th>
+                    <th>Cửa Hàng</th>
                     <th>Doanh Thu</th>
                 </tr>
                 <c:forEach items="${cates}" var="r">
                     <tr>
-                         <td>${r[1]}</td>
+                        <td>${r[1]}</td>
                         <td>${r[3]}</td>
+                         <td>${r[5].name}</td>
                         <td>${String.format("%,d", r[4])} </td>
                     </tr>
                 </c:forEach>

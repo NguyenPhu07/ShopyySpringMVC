@@ -8,11 +8,14 @@ import com.nnp.pojo.User;
 import com.nnp.service.CategoryService;
 import com.nnp.service.ProductService;
 import com.nnp.service.UserService;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -39,29 +42,39 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
+    String currentUsername;
+
     @ModelAttribute
     /*Quăng công khai biến alert thông báo đk thành công cho tất cả controller ở module adminController thấy 
     và apply pendingUser đc cho các view mà có controller ở module AdminController này */
-    public void aler(Model model) {
+    public void aler(Model model,HttpSession session) {
         model.addAttribute("pendingUsers", this.userService.getUserByNonActive());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        currentUsername = authentication.getName();
     }
 
-    @RequestMapping("/admin")
-    public String adminView(Model model) {
+    @RequestMapping("/login")
+    public String loginView(Model model) {
+        return "login";
+    }
+
+    @RequestMapping("/manager")// chạy dô đây là đã xác thực rồi
+    public String adminView(Model model, HttpSession session) {
+
         return "admin";
     }
 
-    @RequestMapping("/admin/approval")
+    @RequestMapping("/approval")
     public String approvalView(Model model, @RequestParam Map<String, String> users,
             @RequestParam Map<String, String> accept) {
         String u = users.get("userId");
-       
+
         if (u != null) { //khi người dùng bấm từ chối thì chọn userId đó từ query param hiện trên url và thực hiện cập nhât or xóa 
             if (Boolean.parseBoolean(accept.get("accept")) == true) {
-                 if (this.userService.existsByUserId(Integer.parseInt(u))) { // trong đây user có tồn tại không thông qua kiểm tra bằng Id dưới csdl!
+                if (this.userService.existsByUserId(Integer.parseInt(u))) { // trong đây user có tồn tại không thông qua kiểm tra bằng Id dưới csdl!
                     this.userService.addorUpdateSeller(this.userService.getUserById(Integer.parseInt(u)));
-                      model.addAttribute("notify", "Cập Nhật Thành Công!");
-                } 
+                    model.addAttribute("notify", "Cập Nhật Thành Công!");
+                }
             }
             if (Boolean.parseBoolean(accept.get("accept")) == false) {
                 if (this.userService.existsByUserId(Integer.parseInt(u))) { // trong đây user có tồn tại không thông qua kiểm tra bằng Id dưới csdl!
@@ -76,7 +89,6 @@ public class AdminController {
         return "approval";
     }
 
-    
     @GetMapping("/register")
     public String register(Model model, @RequestParam Map<String, String> params) {
         model.addAttribute("seller", this.userService.setUser());// bỏ rổ đậu User lên
@@ -87,13 +99,24 @@ public class AdminController {
     @PostMapping("/register")// Xử lý sau khi đăng ký khi người dùng đã nhập thông tin
     public String register(Model model, @ModelAttribute(value = "seller") User u, @RequestParam Map<String, String> params) {
         // nhớ lập trình khi bỏ user vào Bean
-        this.userService.addorUpdateSeller(u);
-        model.addAttribute("errMsg", true);
-        return "redirect:/register";
-        // sử dụng redirect khi mà nhập thông tin xong thì sẽ loại lại trang trắng thông tin!
-        // nói trắng ra là trang sẽ từ controller PostMapping(/register) chạy về GetMapping(/register) nên mới trắng thông tin
-
-        // khi bấm xong PostMapping thì redirect getMapping
         // lợi dụng điều trên để lấy thông tin params errMsg = true để hiện thị ra alert!
+        if (u.getPassword().equals(u.getConfirmPassword())) {// mk khớp với xác nhận
+
+            
+            if(this.userService.addorUpdateSeller(u)){
+               model.addAttribute("errMsg", true);
+               return "redirect:/register";
+            }else{
+                 model.addAttribute("errMsg2",false);
+            }
+            // sử dụng redirect khi mà nhập thông tin xong thì sẽ loại lại trang trắng thông tin!
+            // nói trắng ra là trang sẽ từ controller PostMapping(/register) chạy về GetMapping(/register) nên mới trắng thông tin
+            // khi bấm xong PostMapping thì redirect getMapping
+            
+        } else {
+            model.addAttribute("errMsg", false);
+        }
+        return "register";
     }
+
 }

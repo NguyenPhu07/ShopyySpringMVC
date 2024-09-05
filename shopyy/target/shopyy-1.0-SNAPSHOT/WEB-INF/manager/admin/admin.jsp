@@ -6,5 +6,5 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<h1>Chào Mừng đến trang Quản tr</h1>
+<h1>Chào Mừng đến trang Quản trị</h1>
 

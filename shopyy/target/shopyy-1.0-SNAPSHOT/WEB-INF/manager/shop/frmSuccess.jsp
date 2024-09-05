@@ -20,7 +20,7 @@
     <c:if test="${errMsg == true}">
         <div class="alert alert-danger alert-dismissible">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>Fail!</strong> Danh mục này đã tồn tại!
+            <strong>Fail!</strong> Tên Danh mục này đã tồn tại!
         </div>
         <c:url value="/shop/${shopId}/createCate" var="action"/>
         <a class="btn btn-primary mb-3" href="${action}" role="button">Tạo Lại</a>
@@ -34,12 +34,12 @@
             <strong>Success!</strong> Thao tác thành Công!
         </div>
         <c:url value="/shop/${shopId}" var="action"/>
-        <a class="btn btn-primary" href="${action}" role="button">Quay về Trang Chủ</a>
+        <a class="btn btn-primary mb-3" href="${action}" role="button">Quay về Trang Chủ</a>
     </c:if>
     <c:if test="${errMsg == false}">
         <div class="alert alert-danger alert-dismissible">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>Fail!</strong> Sản Phẩm này đã tồn tại!
+            <strong>Fail!</strong> Tên Sản Phẩm này đã tồn tại!
         </div>
         <c:url value="/shop/${shopId}/createProd" var="action"/>
         <a class="btn btn-primary mb-3" href="${action}" role="button">Tạo Lại</a>

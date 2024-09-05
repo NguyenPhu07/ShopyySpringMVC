@@ -15,4 +15,5 @@ public interface ShopRepository {
     List<Shop> getShops();
     Shop getShopsById(int shopId);
     List<Shop> getShopsByUserId(int UserId);
+    Boolean AddorUpdate(Shop sp);
 }

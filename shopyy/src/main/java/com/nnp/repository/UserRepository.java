@@ -15,6 +15,6 @@ public interface UserRepository {
     User getUserById(int id);
     List<User> getUserByNonActive();
     boolean existsByUserId(int userId);
-    void addorUpdateSeller(User user);
+    boolean addorUpdateSeller(User user);
     void deleteUser(int id);
 }

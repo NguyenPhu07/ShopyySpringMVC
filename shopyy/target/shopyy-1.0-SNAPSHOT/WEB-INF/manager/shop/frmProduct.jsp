@@ -10,7 +10,7 @@
 
 <c:choose>
     <c:when test="${product.id != null}">
-      <h1>Cập Nhật Sản Phẩm</h1>
+        <h1>Cập Nhật Sản Phẩm</h1>
     </c:when>
     <c:otherwise>
         <h1> Thêm Sản Phẩm</h1>
@@ -20,8 +20,10 @@
      style="width: 10rem; margin-left: 0px; margin-top: 5px; margin-bottom: 10px; color: white;">
     Cửa Hàng: ${nsg} 
 </div>
-<c:url value="/shopProds" var="action" />
-<form:form method="post" action="${action}" modelAttribute="product">
+
+
+<c:url value="/shop/shopProds" var="action" />
+<form:form method="post" action="${action}" modelAttribute="product" enctype="multipart/form-data" accept-charset="UTF-8">
     <div class="mb-3 mt-3">
         <label for="name" class="form-label">Tên sản phẩm</label>
         <form:input name="name" path="name" class="form-control" id="name" placeholder="Tên sản phẩm"  />
@@ -33,6 +35,13 @@
     <div class="mb-3 mt-3">
         <label for="price" class="form-label">Gía sản phẩm</label>
         <form:input name="price" path="price" type="number" class="form-control" id="price" placeholder="Gía sản phẩm"  />
+    </div>
+    <div class="mb-3 mt-3">
+        <label for="file" class="form-label">Ảnh sản phẩm</label>
+        <form:input path="file" accept=".png,.jpg" type="file" class="form-control" id="file" name="file" />
+        <c:if test="${product.id != null}">
+            <img src="${product.image}" alt="${product.name}" width="120" />
+        </c:if>
     </div>
     <div class="mb-3 mt-3">
         <label for="manufacture" class="form-label">Nhà sản Xuất</label>
@@ -80,12 +89,15 @@
             <form:hidden path="id"/> <!-- khi submit cập nhật từ form tự động lấy id sản phẩm đó về nếu đang cập nhật-->
             <c:choose>
                 <c:when test="${product.id != null}">
-                    <option value="${c.id}" selected>Cập nhật sản phẩm</option>
+                    Cập nhật sản phẩm
                 </c:when>
                 <c:otherwise>
                     Thêm sản phẩm
                 </c:otherwise>
             </c:choose>
         </button>
+        <c:url value="/shop/${shopId}" var="action"/>
+        <a class="btn btn-primary" href="${action}" role="button" style="margin-left:10px; padding: 7.5px;">Quay về Trang Chủ</a>
     </div>
+
 </form:form>

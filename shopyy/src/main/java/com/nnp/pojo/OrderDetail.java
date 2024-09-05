@@ -6,8 +6,11 @@ package com.nnp.pojo;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -15,6 +18,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import org.springframework.stereotype.Component;
 
 /**
  *
@@ -27,13 +31,13 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name = "OrderDetail.findById", query = "SELECT o FROM OrderDetail o WHERE o.id = :id"),
     @NamedQuery(name = "OrderDetail.findByUnitPrice", query = "SELECT o FROM OrderDetail o WHERE o.unitPrice = :unitPrice"),
     @NamedQuery(name = "OrderDetail.findByQuantity", query = "SELECT o FROM OrderDetail o WHERE o.quantity = :quantity")})
-
+@Component
 public class OrderDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id")
     private Integer id;
     @Column(name = "unit_price")
@@ -44,10 +48,10 @@ public class OrderDetail implements Serializable {
     @ManyToOne(optional = false)
     private Product productId;
     @JoinColumn(name = "order_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)// bật này ms cập nhật lan truyền đc!
     private SaleOrder orderId;
     @JoinColumn(name = "shop_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false,cascade = CascadeType.ALL)
     private Shop shopId;
 
     public OrderDetail() {
@@ -129,5 +133,5 @@ public class OrderDetail implements Serializable {
     public String toString() {
         return "com.nnp.pojo.OrderDetail[ id=" + id + " ]";
     }
-    
+
 }

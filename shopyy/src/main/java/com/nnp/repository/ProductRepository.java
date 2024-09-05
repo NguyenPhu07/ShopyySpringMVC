@@ -37,6 +37,6 @@ public interface ProductRepository {
 
     Boolean AddorUpdate(Product p);
 
-    Boolean DeleteProduct(Product p);
+    Boolean DeleteProduct(int productId);
 
 }

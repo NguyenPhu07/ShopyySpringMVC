@@ -4,6 +4,7 @@
  */
 package com.nnp.repository.impl;
 
+import com.nnp.pojo.Category;
 import com.nnp.pojo.Product;
 import com.nnp.pojo.Shop;
 import com.nnp.repository.ProductRepository;
@@ -36,6 +37,9 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Autowired
     private LocalSessionFactoryBean factory;
+    
+
+
 
     //Hàm Phân Trang
     public List<Product> pagination(Session s, Query q, String page) {
@@ -217,12 +221,25 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         return filteredProducts;
     }
+    
+      // kiểm tra trường name vs fk shopId có trùng ko, description đell quan tâm
+    public boolean isExistProductById(int productId) {// kiểm tra sự tồn tại dể tránh trùng lắp
+        Session s = this.factory.getObject().getCurrentSession();
+
+        TypedQuery<Long> que = s.createQuery("SELECT COUNT(p) FROM Product p WHERE p.id = :id", Long.class);
+        que.setParameter("id", productId);
+        long count = (long) que.getSingleResult();
+
+        return count > 0;
+
+    }
+
 
     // kiểm tra trường name vs fk shopId có trùng ko, description đell quan tâm
     public boolean isExistProduct(String prodName, Shop shopId) {// kiểm tra sự tồn tại dể tránh trùng lắp
         Session s = this.factory.getObject().getCurrentSession();
 
-        TypedQuery<Long> que = s.createQuery("SELECT COUNT(p) FROM Product p WHERE p.name =:prodName AND p.shopId =: shopId", Long.class);
+        TypedQuery<Long> que = s.createQuery("SELECT COUNT(p) FROM Product p WHERE p.name = :prodName AND p.shopId = :shopId", Long.class);
         que.setParameter("prodName", prodName);
         que.setParameter("shopId", shopId);
         long count = (long) que.getSingleResult();
@@ -234,12 +251,15 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public Boolean AddorUpdate(Product p) { // phai set product xong ms bo do AddorUpdate
         Session s = this.factory.getObject().getCurrentSession();
-
+        String current = getProdById(p.getId()).getName();
         if (p.getId() != null) { // đã có sản phẩm rồi chỉ cập nhật thui nhờ form: hidden path=id đã có đối tượng ở backing bean rồi!
-            s.update(p);
+           if(isExistProduct(p.getName(), p.getShopId()) && !p.getName().equalsIgnoreCase(current)){
+                return false;
+            }
+            s.merge(p);
 
         } else { // chưa có sản phẩm nào, thêm mới
-            // kiểm tra trùng lắp khi tạo mới
+            // kiểm tra trùng lắp khi tạo mới theo tên và shop
             if (isExistProduct(p.getName(), p.getShopId())) {
                 return false;
             }
@@ -248,13 +268,17 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         return true;
     }
-
+    
+    //trước khi xóa sản phẩm đó, hãy xóa sản phẩm đó ở list sp ở trường productSet<> ở thực thể Category, Shop nếu có CascadeAll
     @Override
-    public Boolean DeleteProduct(Product p) {
+    public Boolean DeleteProduct(int productId) {
         Session s = this.factory.getObject().getCurrentSession();
-        // kiểm tra có tồn tại hay ko nếu có thì xóa ko thì cút
-        if (isExistProduct(p.getName(), p.getShopId()) == true) {// nếu có tồn tại thì xóa được
-            s.remove(p);
+        // kiểm tra có tồn tại hay ko theo productId nếu có thì xóa ko thì cút
+        if (isExistProductById(productId)) {// nếu có tồn tại thì xóa được
+            Product p = this.getProdById(productId);// nếu có tồn tại lấy và xóa nó
+            p.getCategoryId().getProductSet().remove(p);// xóa sản phẩm đó trong list của Category trước.
+            p.getShopId().getProductSet().remove(p);// xóa sản phẩm đó trong list của shop trước.
+            s.remove(p);// cuối cùng mới tới xóa chính nó!
             return true;
         } else {
             return false; // nếu ko tồn tại thì ko được

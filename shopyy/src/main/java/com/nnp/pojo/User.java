@@ -17,6 +17,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.springframework.stereotype.Component;
@@ -98,6 +99,8 @@ public class User implements Serializable {
     private Set<Comment> commentSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
     private Set<CommentShop> commentShopSet;
+    @Transient // trường đell liên quan đến csdl thông qua @Transient
+    private String confirmPassword;
 
     public User() {
     }
@@ -252,6 +255,20 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "com.nnp.pojo.User[ id=" + id + " ]";
+    }
+
+    /**
+     * @return the confirmPassword
+     */
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    /**
+     * @param confirmPassword the confirmPassword to set
+     */
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
     
 }

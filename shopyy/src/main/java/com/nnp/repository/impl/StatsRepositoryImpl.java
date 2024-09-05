@@ -89,7 +89,8 @@ public class StatsRepositoryImpl implements StatsRepository {
                 b.function(peroid, Integer.class, so.get("createdDate")),// thời gian lụa chọn(input vào)
                 cate.get("id"),
                 cate.get("name"),
-                b.sum(b.prod(od.get("quantity"), od.get("unitPrice")))
+                b.sum(b.prod(od.get("quantity"), od.get("unitPrice"))),
+                cate.get("shopId")
         );
         q.groupBy( // gộp theo năm, tháng or quý, id danh mục
                 b.function("YEAR", Integer.class, so.get("createdDate")),

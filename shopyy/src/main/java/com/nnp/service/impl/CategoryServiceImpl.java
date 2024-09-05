@@ -9,6 +9,7 @@ import com.nnp.pojo.Shop;
 import com.nnp.repository.CategoryRepository;
 import com.nnp.repository.ShopRepository;
 import com.nnp.service.CategoryService;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,21 +18,24 @@ import org.springframework.stereotype.Service;
  *
  * @author Admin
  */
-@Service  
-public class CategoryServiceImpl implements CategoryService{
+@Service
+public class CategoryServiceImpl implements CategoryService {
+
     @Autowired
     private CategoryRepository cateeRepo;
-    
-     @Autowired
+
+    @Autowired
     private ShopRepository shopRepo;
-    
+
     @Autowired
     private Category category;
-    
+
     @Override
-    public List<Category> getCates(){
+    public List<Category> getCates() {
         return this.cateeRepo.getCates();
-    };
+    }
+
+    ;
     
     @Override
     public Category getCateById(int i) {
@@ -45,8 +49,10 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public void addorUpdateCate(Category ctgr, int shopId) {
-       //set shop hiện đang tại trang đó trên url vào
-       ctgr.setShopId(this.shopRepo.getShopsById(shopId));
+        //set shop hiện đang tại trang đó trên url vào
+        ctgr.setName(new String(ctgr.getName().getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8));
+        ctgr.setDescription(new String(ctgr.getDescription().getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8));
+        ctgr.setShopId(this.shopRepo.getShopsById(shopId));
         this.cateeRepo.addorUpdateCate(ctgr);
     }
 
@@ -60,5 +66,4 @@ public class CategoryServiceImpl implements CategoryService{
         return this.cateeRepo.isExistCate(cateName, shopId);
     }
 
-    
 }

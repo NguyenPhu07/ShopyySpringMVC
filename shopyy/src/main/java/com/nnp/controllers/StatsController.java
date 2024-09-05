@@ -46,7 +46,6 @@ public class StatsController {
     public String revenueCatePeroid(Model model,
             @RequestParam(name = "year", required = false, defaultValue = "2020") String year,
             @RequestParam(name = "type", required = false, defaultValue = "MONTH") String peroid) {
-
         // Đưa thông tin đã chọn vào model để hiển thị lại trên form
         model.addAttribute("selectedYear", year);
         model.addAttribute("selectedType", peroid);

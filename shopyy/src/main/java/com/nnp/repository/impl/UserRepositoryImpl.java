@@ -55,21 +55,35 @@ public class UserRepositoryImpl implements UserRepository {
 
         return count > 0;
     }
+    
+    public boolean existsByName(String name) {// kiểm tra sự tồn tại user đó theo Id ko!
+        Session s = this.factory.getObject().getCurrentSession();
+        TypedQuery<Long> que = s.createQuery("SELECT COUNT(u) FROM User u WHERE u.username = :name", Long.class);
+        que.setParameter("name", name);
+        long count = (long) que.getSingleResult();
+
+        return count > 0;
+    }
 
     @Override // cập nhật nhớ bật giao tác
-    public void addorUpdateSeller(User user) {
+    public boolean addorUpdateSeller(User user) {
         Session s = this.factory.getObject().getCurrentSession();
 
-        if (user.getId() != null) { 
-            user.setActive(Boolean.TRUE);// nếu bấm accept xuống tận đây cập nhật do đã có ở csdl rồi!
-            s.update(user);
-        } else {
-            // do những thằng mới tạo sẽ ko có Id, lúc tạo xuống csdl(status persistant) ms tự sinh Id do đã cấu hình tự sinh Id ở lớp Mapping
-            // set mặc định những thằng mới tạo
-            user.setUserRole("ROLE_SELLER");
-            user.setActive(Boolean.FALSE);
-            s.save(user);
+        try {
+            if (user.getId() != null) {
+                s.update(user);
+            } else {// tạo mới setRole cho nó lun
+                // do những thằng mới tạo sẽ ko có Id, lúc tạo xuống csdl(status persistant) ms tự sinh Id do đã cấu hình tự sinh Id ở lớp Mapping
+                // kiểm tra trùng 
+                if (existsByName(user.getUsername())) {
+                    return false;
+                }
+                s.save(user);
+            }
+        } catch (HibernateException ex) {
+            System.err.println(ex.getMessage());
         }
+        return true;
     }
 
     @Override

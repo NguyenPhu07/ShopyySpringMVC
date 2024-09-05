@@ -5,10 +5,13 @@
 package com.nnp.repository.impl;
 
 
+import com.nnp.pojo.Product;
 import com.nnp.pojo.Shop;
+import com.nnp.pojo.User;
 import com.nnp.repository.ShopRepository;
 import java.util.List;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -46,6 +49,14 @@ public class ShopRepositoryImpl implements ShopRepository{
         
         return (Shop) q.getSingleResult();
     }
+    
+    public Shop getShopsByName(String shopName) {
+        Session s = this.factory.getObject().getCurrentSession();
+        Query q = s.createNamedQuery("Shop.findByName", Shop.class);
+        q.setParameter("name", shopName);
+        
+        return (Shop) q.getSingleResult();
+    }
 
     @Override
     public List<Shop> getShopsByUserId(int userId) {
@@ -62,6 +73,44 @@ public class ShopRepositoryImpl implements ShopRepository{
         Query que = s.createQuery(q);
 
         return que.getResultList();
+    }
+    
+    // kiểm tra trùng lắp shop đó có tồn tại không
+    public boolean isExistShop(String shopName, User userId) {// kiểm tra sự tồn tại dể tránh trùng lắp
+        Session s = this.factory.getObject().getCurrentSession();
+
+        TypedQuery<Long> que = s.createQuery("SELECT COUNT(s) FROM Shop s WHERE s.name = :shopName AND s.userId = :userId", Long.class);
+        que.setParameter("shopName", shopName);
+        que.setParameter("userId", userId);
+        long count = (long) que.getSingleResult();
+
+        return count > 0;
+
+    }
+    
+    @Override
+    public Boolean AddorUpdate(Shop sp) { // phai set product xong ms bo do AddorUpdate
+        Session s = this.factory.getObject().getCurrentSession();
+        String current = getShopsById(sp.getId()).getName();
+        if (sp.getId() != null) { // đã có sản phẩm rồi chỉ cập nhật thui nhờ form: hidden path=id đã có đối tượng ở backing bean rồi!
+            
+            if(isExistShop(sp.getName(), sp.getUserId()) && !sp.getName().equalsIgnoreCase(current)){
+                return false;
+            }
+                
+            s.merge(sp);
+            /*kiểm tra nếu một đối tượng với cùng id đã tồn tại trong session hay chưa, 
+            và nếu đã tồn tại, nó sẽ cập nhật đối tượng hiện tại thay vì thêm đối tượng mới vào session như s.update().*/
+
+        } else { // chưa có sản phẩm nào, thêm mới
+            // kiểm tra trùng lắp khi tạo mới theo tên và shop
+            if (isExistShop(sp.getName(), sp.getUserId())) {
+                return false;
+            }
+            s.save(sp);
+        }
+
+        return true;
     }
     
 }
